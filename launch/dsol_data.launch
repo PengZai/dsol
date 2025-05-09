@@ -13,8 +13,8 @@
     <arg name="save" default=""/>
     <arg name="wait_ms" default="10"/>
 
-    <arg name="data" default="vk2"/>
-    <arg name="data_dir" default="/home/chao/Workspace/dataset/vkitti/Scene01/clone"/>
+    <arg name="data" default="d455"/>
+    <arg name="data_dir" default="/root/datasets/realsense_d455/indoor_1"/>
     <!-- <arg name="data_dir" default="/home/chao/Workspace/dataset/kitti/dataset/sequences/00"/> -->
     <!-- <arg name="data_dir" default="/home/chao/Workspace/dataset/tartan_air/gascola/Easy/P003"/> -->
     <arg name="data_max_depth" default="100.0"/>
