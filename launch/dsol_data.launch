@@ -8,15 +8,19 @@
 
     <arg name="tbb" default="1"/>
     <arg name="log" default="5"/>
-    <arg name="vis" default="true"/>
+    <arg name="vis" default="1"/>
     <arg name="freq" default="10"/>
     <arg name="save" default=""/>
     <arg name="wait_ms" default="10"/>
 
     <arg name="data" default="d455"/>
-    <arg name="data_dir" default="/root/datasets/realsense_d455/indoor_1"/>
+    <arg name="data_dir" default="/root/datasets2/polytunnel_2025_May/Easy_sub_set_rectified"/>
+    <!-- <arg name="data_dir" default="/root/datasets2/polytunnel_2025_May/Easy_rectified"/> -->
+    <!-- <arg name="data_dir" default="/root/datasets2/BotanicGarden/1005-07/1005_07_img10hz600p/1005_07_img10hz600p_rectified"/> -->
+    <!-- <arg name="data_dir" default="/root/datasets2/BotanicGarden/1018-00/1018_00_img10hz600p/1018_00_img10hz600p_rectified"/> -->
+    <!-- <arg name="data_dir" default="/root/datasets2/realsense_d455/indoor_1"/> -->
     <!-- <arg name="data_dir" default="/home/chao/Workspace/dataset/kitti/dataset/sequences/00"/> -->
-    <!-- <arg name="data_dir" default="/home/chao/Workspace/dataset/tartan_air/gascola/Easy/P003"/> -->
+    <!-- <arg name="data_dir" default="/root/datasets2/tartan_air/seasonsforest_sample_P002/P002"/> -->
     <arg name="data_max_depth" default="100.0"/>
     <arg name="cloud_max_depth" default="50.0"/>
     <arg name="motion_alpha" default="0.5"/>
@@ -27,7 +31,7 @@
 
         <param name="tbb" type="int" value="$(arg tbb)"/>
         <param name="log" type="int" value="$(arg log)"/>
-        <param name="vis" type="bool" value="$(arg vis)"/>
+        <param name="vis" type="int" value="$(arg vis)"/>
         <param name="freq" type="double" value="$(arg freq)"/>
         <param name="save" type="string" value="$(arg save)"/>
         <param name="wait_ms" type="int" value="$(arg wait_ms)"/>

@@ -1,6 +1,23 @@
 cmake_minimum_required(VERSION 3.15)
 project(dsol)
 
+
+option(ENABLE_CMAKE_DEBUG "Enable detailed debug messages" ON)
+
+if(ENABLE_CMAKE_DEBUG)
+    # Debug or Release
+    set(CMAKE_BUILD_TYPE "Debug")
+else()
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+# Enable compile optimizations
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 ")
+
+# Enable debug flags (use if you want to debug in gdb)
+set(CMAKE_CXX_FLAGS_DEBUG "-g3 ")
+
+
 set(CMAKE_CXX_STANDARD 17)
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 

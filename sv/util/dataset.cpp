@@ -718,6 +718,10 @@ std::string ExtractDatasetName(const std::string& data_dir) {
     name = "tartan_air";
   } else if (absl::StrContains(data_dir, "realsense")) {
     name = "realsense";
+  } else if (absl::StrContains(data_dir, "BotanicGarden")) {
+    name = "BotanicGarden";
+  } else if (absl::StrContains(data_dir, "polytunnel")) {
+    name = "polytunnel";
   }
 
   return name;
@@ -744,6 +748,10 @@ Dataset CreateDataset(const std::string& data_dir, std::string name) {
     ds = TartanAir(data_dir);
   } else if (name == "realsense") {
     ds = StereoFolder::Create(name, data_dir, "infra1", "infra2", "calib.txt");
+  } else if (name == "BotanicGarden") {
+    ds = StereoFolder::Create(name, data_dir, "left_rgb_rectified", "right_rgb_rectified", "calib.txt");
+  } else if (name == "polytunnel") {
+    ds = StereoFolder::Create(name, data_dir, "left_raw_rectified", "right_raw_rectified", "calib.txt");
   } else {
     LOG(WARNING) << fmt::format("Invalid dataset name: {}", name);
   }

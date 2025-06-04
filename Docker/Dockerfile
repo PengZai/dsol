@@ -70,7 +70,7 @@ RUN git clone --depth 1 --branch v1.6.2 https://github.com/google/benchmark.git 
     cmake -E chdir "build" cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBENCHMARK_ENABLE_GTEST_TESTS=OFF ../ && \
     cmake --build "build" --config Release --target install
 
-RUN apt-get update && apt-get install gdb
+RUN apt-get update && apt-get install -y gdb
 RUN python3 -m pip install tqdm
     
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc

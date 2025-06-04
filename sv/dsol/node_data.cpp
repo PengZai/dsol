@@ -3,6 +3,10 @@
 #include <ros/ros.h>
 #include <rosgraph_msgs/Clock.h>
 #include <tf2_ros/transform_broadcaster.h>
+#include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/Image.h>
+#include <image_transport/image_transport.h>
+
 
 #include "sv/dsol/extra.h"
 #include "sv/dsol/node_util.h"
@@ -25,6 +29,7 @@ struct NodeData {
   void InitRosIO();
   void InitDataset();
 
+  void PublishImage(const std_msgs::Header& header, const cv::Mat &img) const;
   void PublishOdom(const std_msgs::Header& header, const Sophus::SE3d& Twc);
   void PublishCloud(const std_msgs::Header& header) const;
   void SendTransform(const gm::PoseStamped& pose_msg,
@@ -47,9 +52,12 @@ struct NodeData {
   tf2_ros::TransformBroadcaster tfbr_;
 
   ros::NodeHandle pnh_;
+  image_transport::ImageTransport it_;
+
   ros::Publisher clock_pub_;
   ros::Publisher pose_array_pub_;
   ros::Publisher align_marker_pub_;
+  image_transport::Publisher image_pub_;
   PosePathPublisher gt_pub_;
   PosePathPublisher kf_pub_;
   PosePathPublisher odom_pub_;
@@ -57,7 +65,7 @@ struct NodeData {
   ros::Publisher points_pub_;
 };
 
-NodeData::NodeData(const ros::NodeHandle& pnh) : pnh_{pnh} {
+NodeData::NodeData(const ros::NodeHandle& pnh) : pnh_{pnh}, it_(pnh) {
   InitRosIO();
   InitDataset();
   InitOdom();
@@ -91,6 +99,7 @@ void NodeData::InitRosIO() {
   kf_pub_ = PosePathPublisher(pnh_, "kf", frame_);
   odom_pub_ = PosePathPublisher(pnh_, "odom", frame_);
   points_pub_ = pnh_.advertise<sm::PointCloud2>("points", 1);
+  image_pub_ = it_.advertise("left_image", 1);
   pose_array_pub_ = pnh_.advertise<gm::PoseArray>("poses", 1);
   align_marker_pub_ = pnh_.advertise<vm::Marker>("align_graph", 1);
 }
@@ -137,6 +146,12 @@ void NodeData::InitOdom() {
   odom_.cmap = GetColorMap(pnh_.param<std::string>("cm", "jet"));
 
   ROS_INFO_STREAM(odom_.Repr());
+}
+
+void NodeData::PublishImage(const std_msgs::Header& header, const cv::Mat &img) const{
+
+  sensor_msgs::ImagePtr msg = cv_bridge::CvImage(header, "bgr8", img).toImageMsg();
+  image_pub_.publish(msg);
 }
 
 void NodeData::PublishCloud(const std_msgs::Header& header) const {
@@ -256,6 +271,7 @@ void NodeData::Run() {
     header.frame_id = frame_;
     header.stamp = time;
 
+    PublishImage(header, image_l);
     gt_pub_.Publish(time, T_c0_c_gt);
     PublishOdom(header, status.Twc());
 
